@@ -28,6 +28,11 @@
 					<input type="email" class="form-control" id="email" required />
 				</div>
 
+				<div class="col-md-4">
+    				<label for="telefone" class="form-label">Telefone</label>
+    				<input type="tel" class="form-control" id="telefone" required />
+				</div>
+
 				<div class="col-md-3">
 					<label for="nascimento" class="form-label">Data de nascimento</label>
 					<input type="date" class="form-control" id="nascimento" required />
@@ -38,14 +43,23 @@
 				</div>
 			</form>
 
+			<p id="contador-pacientes">Total de pacientes: 0</p>
+
 			<!-- Tabela de pacientes -->
 			<h2 class="h4 mb-3">Pacientes cadastrados</h2>
+			<div class="mb-3">
+				<label for="busca-paciente" class="form-label">Buscar por nome</label>
+				<input type="search" class="form-control" id="busca-paciente" />
+			</div>
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th>Nome</th>
+						<th id="ordenar-nome" role="button">Nome</th>
 						<th>E-mail</th>
+						<th>Telefone</th>
 						<th>Data de nascimento</th>
+						<th>Idade</th>
+						<th>Ações</th>
 					</tr>
 				</thead>
 				<tbody id="tabela-pacientes">
