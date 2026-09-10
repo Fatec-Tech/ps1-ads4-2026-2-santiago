@@ -1,4 +1,6 @@
 const pacientes = [];
+const pacientesArquivo = [];
+const pacientesManuais = [];
 
 const formulario = document.getElementById('form-paciente');
 const tabela = document.getElementById('tabela-pacientes');
@@ -10,6 +12,15 @@ function adicionarPaciente(nome, email, nascimento) {
 
 function renderizarTabela() {
 	tabela.innerHTML = '';
+
+	  if (pacientes.length === 0) {
+    tabela.innerHTML = `
+      <tr>
+        <td colspan="3" class="text-center">Nenhum paciente cadastrado ainda</td>
+      </tr>
+    `;
+    return;
+  }
 
 	pacientes.forEach((paciente) => {
 		const linha = document.createElement('tr');
@@ -27,9 +38,23 @@ function formatarData(dataISO) {
 	return `${dia}/${mes}/${ano}`;
 }
 
+const resumoPacientes = document.getElementById('resumo-pacientes');
+
+function atualizarResumo() {
+  resumoPacientes.textContent =
+    `Pacientes do arquivo: ${pacientesArquivo.length} | Cadastrados na sessão: ${pacientesManuais.length}`;
+}
+
 // Nova função: busca os pacientes iniciais a partir do arquivo JSON
 async function carregarPacientesIniciais() {
 	try {
+		// simular atraso
+    	mensagemCarregando.textContent = 'Carregando pacientes...';
+
+    	await new Promise((resolve) => {
+      	setTimeout(resolve, 1000);
+    	});
+
 		const resposta = await fetch('data/pacientes.json');
 		console.log(resposta);
 
@@ -42,15 +67,32 @@ async function carregarPacientesIniciais() {
 
 		// Adiciona cada paciente vindo do arquivo ao nosso array local
 		dados.forEach((paciente) => {
-			adicionarPaciente(paciente.nome, paciente.email, paciente.nascimento);
-		});
+  			const pacienteArquivo = {
+    			nome: paciente.nome,
+    			email: paciente.email,
+    			nascimento: paciente.nascimento,
+    			origem: 'arquivo'
+  			};
 
-		renderizarTabela();
+  				pacientesArquivo.push(pacienteArquivo);
+  				pacientes.push(pacienteArquivo);
+			});
+
+			renderizarTabela();
+			atualizarResumo();
 	} catch (erro) {
-		console.error('Não foi possível carregar os pacientes:', erro);
-		mensagemCarregando.textContent =
-			'Erro ao carregar pacientes. Veja o console para mais detalhes.';
-		return; // sai da função sem esconder a mensagem de erro
+  console.error('Não foi possível carregar os pacientes:', erro);
+
+  mensagemCarregando.textContent =
+    'Erro ao carregar pacientes. Tente novamente mais tarde.';
+
+  tabela.innerHTML = `
+    <tr>
+      <td colspan="3" class="text-center text-danger">
+        Não foi possível carregar os pacientes.
+      </td>
+    </tr>
+  `;	return; // sai da função sem esconder a mensagem de erro
 	}
 
 	mensagemCarregando.textContent =
@@ -65,10 +107,20 @@ formulario.addEventListener('submit', (event) => {
 	const email = document.getElementById('email').value;
 	const nascimento = document.getElementById('nascimento').value;
 
-	adicionarPaciente(nome, email, nascimento);
-	renderizarTabela();
+	const novoPaciente = {
+    nome,
+    email,
+    nascimento,
+    origem: 'manual'
+  };
 
-	formulario.reset();
+  pacientesManuais.push(novoPaciente);
+  pacientes.push(novoPaciente);
+
+  renderizarTabela();
+  atualizarResumo();
+
+  formulario.reset();
 });
 
 // Assim que o script carrega, já dispara a busca dos dados iniciais
