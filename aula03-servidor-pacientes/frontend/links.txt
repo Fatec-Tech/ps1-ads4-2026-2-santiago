@@ -1,0 +1,2 @@
+URL backend = https://ps1-ads4-2026-2-santiago.onrender.com
+URL Frontend = https://ps1-ads4-2026-2-santiago-1.onrender.com
