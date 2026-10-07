@@ -1,4 +1,4 @@
-const URL_API = 'https://ps1-ads4-2026-2-santiago.onrender.com';
+const URL_API = 'https://ps1-ads4-2026-2-santiago-1.onrender.com';
 const pacientes = [];
 
 const formulario = document.getElementById('form-paciente');
