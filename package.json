@@ -1,0 +1,19 @@
+{
+  "name": "ps1-ads4-2026-2-santiago",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fatec-Tech/ps1-ads4-2026-2-santiago.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Fatec-Tech/ps1-ads4-2026-2-santiago/issues"
+  },
+  "homepage": "https://github.com/Fatec-Tech/ps1-ads4-2026-2-santiago#readme"
+}
