@@ -1,6 +1,6 @@
 // TROQUE pela URL do SEU backend no Render (termina em /pacientes).
 // Para testar localmente use: 'http://localhost:3000/pacientes'
-const URL_API = 'http://localhost:3000/pacientes';
+const URL_API = 'https://api-clinica-luizsantiago.onrender.com';
 
 const formulario = document.getElementById('form-paciente');
 const tabela = document.getElementById('tabela-pacientes');
