@@ -14,9 +14,21 @@ const pacientes = [
 ];
 let proximoId = 4;
 
-// READ (lista)
+// READ (lista, com filtro opcional por nome)
 app.get('/pacientes', (req, res) => {
+  const { nome } = req.query;
+  if (nome) {
+    const filtrados = pacientes.filter((p) =>
+      p.nome.toLowerCase().includes(nome.toLowerCase())
+    );
+    return res.json(filtrados);
+  }
   res.json(pacientes);
+});
+
+// TOTAL (precisa ficar ANTES de /pacientes/:id)
+app.get('/pacientes/total', (req, res) => {
+  res.json({ total: pacientes.length });
 });
 
 // READ (um)
@@ -35,6 +47,9 @@ app.post('/pacientes', (req, res) => {
   if (!nome || !email || !nascimento) {
     return res.status(400).json({ erro: 'Nome, e-mail e nascimento são obrigatórios' });
   }
+  if (pacientes.some((p) => p.email === email)) {
+    return res.status(409).json({ erro: 'E-mail já cadastrado' });
+  }
   const novoPaciente = { id: proximoId++, nome, email, nascimento };
   pacientes.push(novoPaciente);
   res.status(201).json(novoPaciente);
@@ -50,6 +65,9 @@ app.put('/pacientes/:id', (req, res) => {
   const { nome, email, nascimento } = req.body ?? {};
   if (!nome || !email || !nascimento) {
     return res.status(400).json({ erro: 'Nome, e-mail e nascimento são obrigatórios' });
+  }
+  if (pacientes.some((p) => p.email === email && p.id !== id)) {
+    return res.status(409).json({ erro: 'E-mail já cadastrado' });
   }
   paciente.nome = nome;
   paciente.email = email;
